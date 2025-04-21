@@ -1,33 +1,513 @@
-<!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABC</title>
+    <title>MirrorVerse: Pushing Diffusion Models to Realistically Reflect the World</title>
+    <meta name="description" content="We propose SynMirrorV2, a large-scale synthetic dataset with diversity in objects and their relative position and orientation in the scene.">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta name="robots" content="all">
+    <meta content="en_EN" property="og:locale">
+    <meta content="website" property="og:type">
+    <meta content="https://mirror-verse.github.io/" property="og:url">
+    <meta content="MirrorVerse" property="og:title">
+    <meta content="MirrorVerse: Pushing Diffusion Models to Realistically Reflect the World" property="og:description">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@your_twitter_id">
+    <meta name="twitter:description" content="MirrorVerse: Pushing Diffusion Models to Realistically Reflect the World">
+    <meta name="twitter:image:src" content="assets/figures/ours-msd-web-teaser.jpg">
+
+    <link rel="stylesheet" type="text/css" media="all" href="assets/stylesheets/main_free.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="clarity/clarity.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/foundation.min.css">
+    <link href="assets/fontawesome-free-6.6.0-web/css/all.min.css" rel="stylesheet">
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            "HTML-CSS": {
+              scale: 95,
+              fonts: ["Gyre-Pagella"],
+              imageFont: null,
+              undefinedFamily: "'Arial Unicode MS', cmbright"
+            },
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                processEscapes: true
+              }
+          });
+    </script>
+    <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css" />
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            font-size: 3em;
-            color: #333;
-        }
-        p {
-            font-size: 1.5em;
-            color: #666;
+        .highlight-row {
+            background-color: #f9f9f9; /* Light gray background */
+            border: 2px solid #d78f8f; /* Light border around the row */
         }
     </style>
 </head>
+
 <body>
-    <h1>MirrorVerse: Pushing Diffusion Models to Realistically Reflect the World</h1>
-    <p>Coming Soon</p>
+    <!-- Title Page -->
+    <!-- Dark Theme Example -->
+    <!-- <div class="container blog" id="first-content" style="background-color: #304463;">
+        <div class="blog-title white"> -->
+    <!-- White Theme Example -->
+    <div class="container blog" id="first-content" style="background-color: #DDCECD;">
+        <div class="blog-title">
+            <div class="blog-intro">
+                <div>
+                    <h1 class="title">MirrorVerse: Pushing Diffusion Models to Realistically Reflect the World</h1>
+                    <h1>CVPR 2025</h1>
+                    <p class="author">
+                        <a href="https://www.linkedin.com/in/ankit-dhiman-46109a174/" target="_blank">Ankit Dhiman</a> <sup>1,2<b>*</b></sup>,
+                        <a href="https://cs-mshah.github.io/" target="_blank">Manan Shah</a> <sup>1<b>*</b></sup> and
+                        <a href="https://cds.iisc.ac.in/faculty/venky/" target="_blank">R Venkatesh Babu</a> <sup>1</sup>
+                        <br>
+                    </p>
+                    <p class="author" style="padding-top: 0px;">
+                        <sup><b>*</b></sup> Equal Contribution
+                        <br>
+                        <sup>1</sup> Vision and AI Lab, IISc Bangalore
+                        <br>
+                        <sup>2</sup> Samsung R & D Institute India - Bangalore
+                        <br>
+                    </p>
+
+                    <p class="abstract">
+                        <p class="abstract">
+                        <p>
+						<b>TL;DR:</b> We introduce <b>SynMirrorV2</b>, a large-scale synthetic dataset containing 207K samples with full scene geometry, including depth maps, normal maps, and segmentation masks. We demonstrate that, with a training curriculum, <b>MirrorFusionv2</b>; a depth-conditioned generation network; can effectively generalize to real-world scenes.
+						</p>
+
+						<p>
+						Key featues of <b>SynMirrorV2</b> are:
+						<br>
+						• <b>Pose randomization</b> (position, rotation, grounding)<br>
+						• <b>Object pairing</b> to enable complex multi-object scenes<br>
+						<br>
+
+						</p>
+							
+
+                        </p>
+                    </p>
+                   
+                </div>
+               
+                <div class="info">
+                        <a href="https://mirror-verse.github.io/" class="button icon" style="background-color: rgba(255, 255, 255, 0.25)">Paper  (coming soon)<i
+                                class="fa-solid fa-book-open"></i></a> &nbsp;&nbsp;
+
+                        <a href="https://mirror-verse.github.io/" class="button icon" style="background-color: rgba(255, 255, 255, 0.25)">Source Code (coming soon)<i class="fa-solid fa-code"></i></a>  &nbsp;&nbsp; 
+                        <a href="https://mirror-verse.github.io/" class="button icon" style="background-color: rgba(255, 255, 255, 0.25)">Dataset (coming soon)<i
+                                class="fa-solid fa-database"></i></a> &nbsp;&nbsp;
+						<a href="https://val.cds.iisc.ac.in/reflecting-reality.github.io/" class="button icon" style="background-color: rgba(255, 255, 255, 0.25)">Reflecting-Reality <i
+                                class="fas fa-square""></i></a> &nbsp;&nbsp;
+                </div>
+            </div>
+
+            <div class="blog-cover">
+                <img class="foreground" src="assets/figures/ours-msd-web-teaser.jpg">
+                <img class="background" src="assets/figures/ours-msd-web-teaser.jpg">
+            </div>
+        </div>
+    </div>
+
+	<!-- Uncomment this piece of code for the podcast-->
+    <!-- <div class="container blog main gray">     -->
+        <!-- <p> -->
+            <!-- <b>Cool Podcast <i class="fa-solid fa-podcast"></i> Generated by <a href="https://notebooklm.google.com/">NotebookLM!</a></b> -->
+        <!-- </p> -->
+        <!-- Add .wav file input -->
+        <!-- <audio controls> -->
+            <!-- <source src="assets/audio/notebookLM.wav" type="audio/wav"> -->
+            <!-- Your browser does not support the audio element. -->
+        <!-- </audio> -->
+    <!-- </div> -->
+
+    <div class="container blog main">
+        <h1>
+            Introduction
+        </h1>
+        <p class='text'>
+            Despite remarkable progress in text-to-image generation, state-of-the-art method fails to generate realistic mirror reflections. We put recent state-of-the-art models, Stable Diffusion 3.5 and FLUX to generate a scene with realistic and coherent reflections. 
+        </p>
+
+        <!-- <img src="assets/figures/sd-generations.png"> -->
+
+        <div class="columns-2">
+            <div>
+                <img src="assets/figures/motivaton_fig_1.jpg">
+                <p class="caption">
+                    <b>Prompt:</b> A perfect plane mirror reflection of a mug which is placed in front of the mirror.
+                </p>
+            </div>
+            <div>
+                <img src="assets/figures/motivaton_fig_2.jpg">
+                <p class="caption">
+                    <b>Prompt:</b> A perfect plane mirror reflection of a stuffed toy bear which is placed in front of the mirror.
+                </p>
+            </div>
+        </div>
+
+        <p class='text'>
+            We observe that T2I methods fail on the challenging task of generating realistic and plausible mirror reflections. Either they get the orientation of the object wrong in the reflection or fail to create a photo-realistic scene with mirror placed in it. 
+			Further, inpainting methods also fail in this task. Recent method to generate realistic and controllable mirror reflections, MirrorFusion also falls short on real-world and challenging scenes as apparent in the below figure. 
+        </p>
+    </div>
+    <div class="container blog main red">
+        <img src="assets/figures/teaser.jpg">
+
+        <p class="caption">
+            <b>Prompt:</b> All the images were generated by prefixing the mirror text prompt: <b><i style="color:#15761f;">"A perfect plain mirror reflection
+            of "</i></b> to the input object description.
+        </p>
+    </div>
+    <div class="container blog main">
+        <p class='text'>
+			We demonstrate that a generative method trained on the <b>SynMirrorV2</b> dataset performs well in complex multi-object scenarios and effectively generalizes to real-world scenarios.
+        </p>
+    </div>
+
+    <div class="container blog main">
+        <h1 >
+            Dataset
+        </h1>
+
+        <p class="text">
+			We find that previous mirror datasets are not enough to train a generative model and are not tailored for the mirror reflection generation task. Further, previously proposed <a href="https://huggingface.co/datasets/cs-mshah/SynMirror">SynMirror</a> lacks key augmentations such as object grounding, rotation, and multi-object scenarios, which restrict the model, which is trained on SynMirror, to generalize to real-world scenes. 
+        </p>
+        
+        <p class="text">
+            We introduce <b>SynMirrorV2</b>, a dataset enhanced with key augmentations such as object grounding, rotation, and support for multiple objects within a scene. To create the dataset, we use 3D assets from <a href="https://objaverse.allenai.org/objaverse-1.0/">Objaverse</a> and <a href="https://amazon-berkeley-objects.s3.amazonaws.com/index.html">Amazon Berkeley Objects (ABO)</a>.
+        </p>
+
+        <p class="text">
+            We employ <a href="https://github.com/DLR-RM/BlenderProc">BlenderProc</a> to render each 3D object along with its corresponding depth map, normal map, and segmentation mask. For each object, we generate three random views and apply augmentations, including varied object placement and orientation relative to the mirror within the scene.
+        </p>
+    </div>
+
+    <!-- <div class="container blog main gray large">
+        <p class="caption selection">
+            Select Samples from <b>SynMirror:</b>
+            <Select id="image-selector-dataset">
+                <option value="chair" selected>chair</option>
+                <option value="sofa">sofa</option>
+                <option value="glass-cup">glass-cup</option>
+                <option value="lamp">lamp</option>
+                <option value="pouffe">pouffe</option>
+                <option value="trophy">trophy</option>
+                <option value="tire">tire</option>
+                <option value="person">person</option>
+                <option value="statue">statue</option>
+                <option value="gun">gun</option>
+                <option value="firehydrant">firehydrant</option>
+                <option value="toy-bunny">toy-bunny</option>
+                <option value="coke">coke</option>
+                <option value="box">box</option>
+                <option value="lantern">lantern</option>
+                <option value="shell">shell</option>
+                <option value="cactus">cactus</option>
+                <option value="teddy">teddy</option>
+                <option value="barrel">barrel</option>
+                <option value="rooster">rooster</option>
+                <option value="vase">vase</option>
+            </Select>
+        
+            <select id="image-selector-dataset-temp" style="display: none;">
+                <option id="image-selector-dataset-temp-option"></option>
+            </select>.
+
+            Use the slider to view RGB, Depth, Normal maps and Segmentation masks of the selected object.
+        </p>
+        <div class="columns-3">
+            <div>
+                <img-comparison-slider id="dataset-seg" class="slider-container white">
+                    <figure slot="first" class="before">
+                        <img src="assets/figures/chair_img.png" />
+                        <figcaption>RGB</figcaption>
+                    </figure>
+                    <figure slot="second" class="after">
+                        <img src="assets/figures/chair_seg.png" />
+                        <figcaption>Seg</figcaption>
+                    </figure>
+                </img-comparison-slider>
+            </div>
+            <div>
+                <img-comparison-slider id="dataset-depth" class="slider-container white">
+                    <figure slot="first" class="before">
+                        <img src="assets/figures/chair_img.png" />
+                        <figcaption>RGB</figcaption>
+                    </figure>
+                    <figure slot="second" class="after">
+                        <img src="assets/figures/chair_depth.png" />
+                        <figcaption>Depth</figcaption>
+                    </figure>
+                </img-comparison-slider>
+            </div>
+            <div>
+                <img-comparison-slider id="dataset-normal" class="slider-container white">
+                    <figure slot="first" class="before">
+                        <img src="assets/figures/chair_img.png" />
+                        <figcaption>RGB</figcaption>
+                    </figure>
+                    <figure slot="second" class="after">
+                        <img src="assets/figures/chair_normal.png" />
+                        <figcaption>Normal</figcaption>
+                    </figure>
+                </img-comparison-slider>
+            </div>
+        </div>
+    </div> -->
+
+
+    <div class="container blog main gray large">
+        <img src="assets/figures/fig_data_generation.jpg">
+        <p class="caption">
+            Our dataset generation pipeline introduces key augmentations such as <b>random positioning</b>, <b>rotation</b>, and <b>grounding of objects</b> within the scene using the 3D-Positioner. Additionally, we pair objects in semantically consistent combinations to simulate complex spatial relationships and occlusions, capturing realistic interactions for <b>multi-object scenes</b>.
+        </p>
+    </div>
+
+    <div class="container blog main">
+        <p class="text">
+            <div class="table-wrapper">
+                <table>
+                    <thead class="center">
+                        <tr>
+                            <th>Dataset</th>
+                            <th>Type</th>
+                            <th>Size</th>
+                            <th>Attributes</th>
+                        </tr>
+                    </thead>
+                    <tbody class="center">
+                        <tr>
+                            <td><a href="https://arxiv.org/abs/1908.09101">MSD</a></td>
+                            <td>Real</td>
+                            <td>4018</td>
+                            <td>RGB, Masks</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://arxiv.org/abs/2308.03280">Mirror-NeRF</a></td>
+                            <td>Real &amp; Synthetic</td>
+                            <td>9 scenes</td>
+                            <td>RGB, Masks, Multi-View</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://www.researchgate.net/publication/372496048_Designing_a_Lightweight_Edge-Guided_Convolutional_Neural_Network_for_Segmenting_Mirrors_and_Reflective_Surfaces">DLSU-OMRS</a></td>
+                            <td>Real</td>
+                            <td>454</td>
+                            <td>RGB, Mask</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://ieeexplore.ieee.org/document/10064348">TROSD</a></td>
+                            <td>Real</td>
+                            <td>11060</td>
+                            <td>RGB, Mask</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://openaccess.thecvf.com/content_CVPR_2020/papers/Lin_Progressive_Mirror_Detection_CVPR_2020_paper.pdf">PMD</a></td>
+                            <td>Real</td>
+                            <td>6461</td>
+                            <td>RGB, Masks</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://openaccess.thecvf.com/content/CVPR2021/html/Mei_Depth-Aware_Mirror_Segmentation_CVPR_2021_paper.html">RGBD-Mirror</a></td>
+                            <td>Real</td>
+                            <td>3049</td>
+                            <td>RGB, Depth</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://arxiv.org/abs/2106.06629">Mirror3D</a></td>
+                            <td>Real</td>
+                            <td>7011</td>
+                            <td>RGB, Masks, Depth</td>
+                        </tr>
+                        <tr>
+                            <td><b><a href="https://huggingface.co/datasets/cs-mshah/SynMirror">SynMirror</a></b></td>
+                            <td><b>Synthetic</b></td>
+                            <td><b>198204</b></td>
+                            <td><b>Single Fixed Objects: RGB, Depth,Masks, Normals, Multi-View</b></td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><b>SynMirrorV2 (Ours)</b></td>
+                            <td><b>Synthetic</b></td>
+                            <td><b>207610 </b></td>
+                            <td><b>Single + Multiple Objects: RGB, Depth,
+                                Masks, Normals, Multi-View, Augmentations</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="caption">
+                A comparison between <b>SynMirrorV2</b> and other mirror datasets. <b>SynMirrorV2</b> surpasses existing
+                mirror datasets in terms of attribute diversity and variability.
+        </p>
+    </div>
+
+    <!-- <div class="container blog main">
+        <h1>
+            Method
+        </h1>
+
+        <p class="text">
+            We propose <b>MirrorFusion</b>, a novel depth-conditioned inpainting method that generates high-quality mirror reflections
+            given an input image and a mask depicting the mirror region. The architecture of <b>MirrorFusion</b> is built upon <a href="https://arxiv.org/abs/2403.06976">BrushNet</a>
+            by incorporating a channel for depth, which is necessary for incorporating the geometric information of the object and 
+            its placement in the scene along with the mirror. <b>MirrorFusion</b> is fine-tuned on <b>SynMirror</b> from the Stable-Diffusion-v1.5 checkpoint. 
+            During inference, we provide the masked input image and a binary mask depicting the mirror region.
+            The depth map can be estimated from the input image using any monocular depth estimation methods such as <a href="https://arxiv.org/abs/2312.02145">Marigold</a> or <a href="https://arxiv.org/abs/2406.09414">Depth-Anything-V2</a>.
+        </p>
+    </div>
+
+    <div class="container blog main gray large">
+        <img src="assets/figures/architecture.png">
+        <p class="caption">
+            <b>Overview of the architecture.</b> We encode the input image <b>$X$</b> using a pre-trained image encoder from Stable
+            Diffusion to get <b>$Z_m$</b>. Subsequently, we resize the mirror mask <b>$m$</b> and depth map <b>$d$</b> to obtain
+            resized mask <b>$X_m$</b> and depth <b>$X_d$</b>. Then, we concatenate noisy latents <b>$Z_t$</b>, <b>$Z_m$</b>,
+            <b>$X_m$</b>, and <b>$X_d$</b> which are fed into the Conditioning U-Net <b>$\epsilon^{'}_{\theta}$</b>. Each layer of
+            the Generation U-Net <b>$\epsilon_{\theta}$</b> is conditioned via zero convolutions with corresponding layers of
+            <b>$\epsilon^{'}_{\theta}$</b>. Additionally, <b>$\epsilon_{\theta}$</b> is conditioned by text embeddings. The
+            pre-trained decoder then decodes the denoised latent to produce an image with mirror reflections.
+        </p>
+    </div> -->
+
+    <div class="container blog main">
+        <h1>
+            Qualitative Results
+        </h1>
+
+        <!-- <p class="text">
+            We compare <b>MirrorFusion</b> with different state-of-the-art inpainting methods on <b>MirrorBench</b>, a held-out subset of <b>SynMirror</b>
+            containing seen and unseen object categories.
+        </p> -->
+
+        <img src="assets/figures/fig_cmp_mirrorbenchv2.jpg">
+        <p class="caption">
+            <b>Comparison with <code><a href="https://github.com/val-iisc/Reflecting-Reality">MirrorFusion</a></code>.</b> <br>
+            We compare our method with the baseline MirrorFusion on MirrorBenchV2. The baseline method shown struggles with pose variations, even in single-object scenes, and fails to produce accurate reflections for multiple objects. In contrast, our method handles variations in the object orientation effectively and generates geometrically accurate reflections, even in complex, multi-object scenarios.
+        </p>
+
+        <img src="assets/figures/fig_cmp-MSD-Real-World.jpg">
+        <p class="caption">
+            <b>Comparison on Real-World Dataset.</b> <br>
+            We show results for <code><a href="https://github.com/val-iisc/Reflecting-Reality">MirrorFusion</a></code>, our method and our method fine-tuned on the <a href="https://mhaiyang.github.io/ICCV2019_MirrorNet/index">MSD</a> dataset. We observe that our method can generate reflections capturing the intricacies of complex scenes, such as a cluttered cable on the table and the presence of two mirrors in a 3D scene.
+        </p>
+
+    </div>
+
+    <!-- <div class="container blog main">
+        <h1>
+            Quantitative Results
+        </h1>
+
+        <p class="text">
+            We quantitatively compare <b>MirrorFusion</b> with <code>BrushNet-FT</code> on <b>MirrorBench</b>, which consists of 
+            $1497$ samples from known categories and $1494$ samples from unseen categores during training.
+            We benchmark based on four aspects: masked region preservation, reflection generation quality, reflection geometry and
+            text alignment. We generate 4 outputs using random seeds for each sample and report the average scores across <b>MirrorBench</b> by selecting 
+            the image with the best SSIM score over the unmasked region as the representative image.
+        </p>
+
+        <p class="text">
+            Masked Image Preservation metrics are computed over the unmasked mirror region.
+            <div class="table-wrapper">
+                <table>
+                    <thead class="center">
+                        <tr>
+                            <th></th>
+                            <th colspan="3">Masked Image Preservation</th>
+                            <th>Text Alignment</th>
+                        </tr>
+                        <tr>
+                            <th>Models</th>
+                            <th><b>PSNR</b> &uarr;</th>
+                            <th><b>SSIM</b> &uarr;</th>
+                            <th><b>LPIPS</b> &darr;</th>
+                            <th><b>CLIP Sim</b> &uarr;</th>
+                        </tr>
+                    </thead>
+                    <tbody class="center">
+                        <tr>
+                            <td>Brushnet-FT</td>
+                            <td>23.06</td>
+                            <td><b>0.84</b></td>
+                            <td>0.058</td>
+                            <td>24.90</td>
+                        </tr>
+                        <tr>
+                            <td><b>MirrorFusion (Ours)</b></td>
+                            <td><b>24.22</b></td>
+                            <td><b>0.84</b></td>
+                            <td><b>0.051</b></td>
+                            <td><b>25.23</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </p>
+
+        <p class="text">
+            Reflection Generation Quality metrics are computed over the segmentation mask containing the mirror reflection of the object and floor in the ground truth
+            input image. To measure the reflection geometry, we compute the Intersection over Union (IoU) 
+            between the segmentation regions of ground truth object reflection and generated object reflection. 
+            We utilise <a href="https://github.com/facebookresearch/segment-anything">SAM</a> for segmenting the reflection of the object in the mirror.
+            <div class="table-wrapper">
+                <table>
+                    <thead class="center">
+                        <tr>
+                            <th></th>
+                            <th colspan="3">Reflection Generation Quality</th>
+                            <th>Reflection Geometry</th>
+                        </tr>
+                        <tr>
+                            <th>Models</th>
+                            <th><b>PSNR</b> &uarr;</th>
+                            <th><b>SSIM</b> &uarr;</th>
+                            <th><b>LPIPS</b> &darr;</th>
+                            <th><b>IoU</b> &uarr;</th>
+                        </tr>
+                    </thead>
+                    <tbody class="center">
+                        <tr>
+                            <td>Brushnet-FT</td>
+                            <td>19.15</td>
+                            <td><b>0.84</b></td>
+                            <td>0.082</td>
+                            <td>0.566</td>
+                        </tr>
+                        <tr>
+                            <td><b>MirrorFusion (Ours)</b></td>
+                            <td><b>20.35</b></td>
+                            <td><b>0.84</b></td>
+                            <td><b>0.075</b></td>
+                            <td><b>0.567</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </p>
+    </div> -->
+
+    <!-- Footer Page -->
+    <footer>
+        <div class="container">
+            <p>
+                This website is built using the <a href="https://shikun.io/projects/clarity">Clarity Template</a>, designed by <a href="https://shikun.io/">Shikun Liu</a>.
+            </p>
+        </div>    
+    </footer>
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="clarity/clarity.js"></script>    
+    <script src="assets/scripts/main.js"></script>    
 </body>
 </html>
